@@ -4,7 +4,7 @@
  */
 package com.muyumi.rtkdatagroupsproject;
 
-/**
+/*
  *
  * @author Timkov Anton
  */

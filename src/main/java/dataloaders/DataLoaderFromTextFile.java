@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.muyumi.rtkdatagroupsproject;
+package dataloaders;
+
+import com.muyumi.rtkdatagroupsproject.Person;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
  * @author Timkov Anton
  */
 public class DataLoaderFromTextFile implements DataLoader<Person> {

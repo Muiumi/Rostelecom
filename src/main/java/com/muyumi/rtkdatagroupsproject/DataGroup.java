@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author Timkov Anton
  */
 public class DataGroup {

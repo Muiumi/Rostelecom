@@ -2,13 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.muyumi.rtkdatagroupsproject;
+package dataloaders;
+
+import java.util.ArrayList;
 
 /**
- *
- * @author timko
+ * @param <Person>
+ * @author Timkov Anton
  */
-public interface Command {
+public interface DataLoader<Person> {
 
-    void execute();
+    ArrayList<Person> loadData();
+
 }

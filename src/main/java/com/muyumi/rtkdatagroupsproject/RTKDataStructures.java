@@ -3,21 +3,23 @@
  */
 package com.muyumi.rtkdatagroupsproject;
 
-import java.io.IOException;
+import commands.CommandBuilder;
+import dataloaders.DataLoaderFromTextFile;
+
 import java.util.Scanner;
 
 /**
- *
  * @author Timkov Anton
  */
 public class RTKDataStructures {
 
-    public static void main(String[] args) throws IOException {
-        DataLoaderFromTextFile fileDataLoader = new DataLoaderFromTextFile("students.csv");
-        StudentService service = new StudentService(fileDataLoader);
-        CommandBuilder builder = new CommandBuilder(service);
+    public static void main(String[] args) {
+        var fileDataLoader = new DataLoaderFromTextFile("students.csv");
+        var service = new StudentService(fileDataLoader);
+        var builder = new CommandBuilder(service);
+        service.loadDataFromLoader();
 
-        Scanner cmdScan = new Scanner(System.in, "windows-1251");
+        Scanner cmdScan = new Scanner(System.in);
         System.out.println("Для получения списка всех команд введите help, для выхода из программы введите exit.\nВведите желаемую команду");
         while (cmdScan.hasNext()) {
             builder.commandFactory(cmdScan.nextLine());

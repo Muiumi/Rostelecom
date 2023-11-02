@@ -5,7 +5,6 @@
 package com.muyumi.rtkdatagroupsproject;
 
 /**
- *
  * @author Timkov Anton
  */
 public class Person {
