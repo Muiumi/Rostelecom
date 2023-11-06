@@ -10,13 +10,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Timkov Anton
  */
-public class DataLoaderFromTextFile implements DataLoader<Person> {
+public class DataLoaderFromTextFile implements IDataLoader<Person> {
 
     private final String path;
+    private static String tableParams;
 
     public DataLoaderFromTextFile(String path) {
         this.path = path;
@@ -27,7 +29,7 @@ public class DataLoaderFromTextFile implements DataLoader<Person> {
         try (BufferedReader buff = new BufferedReader(new FileReader(path))) {
             String line;
             ArrayList<Person> personsList = new ArrayList<>();
-            buff.readLine();
+            tableParams = buff.readLine();
             while ((line = buff.readLine()) != null) {
                 String[] personData = line.split(",");
                 Person person = new Person(personData);
@@ -39,5 +41,10 @@ public class DataLoaderFromTextFile implements DataLoader<Person> {
             System.out.println("Error: " + ex.getMessage());
         }
         return null;
+    }
+
+    public static String[] getSubjects() {
+        String[] subjects = tableParams.split(",");
+        return Arrays.copyOfRange(subjects,4,subjects.length);
     }
 }

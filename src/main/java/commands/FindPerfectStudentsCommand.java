@@ -9,7 +9,7 @@ import com.muyumi.rtkdatagroupsproject.*;
 /**
  * @author Timkov Anton
  */
-public class FindPerfectStudentsCommand implements Command {
+public class FindPerfectStudentsCommand implements ICommand {
 
     private final StudentService service;
 
@@ -20,9 +20,9 @@ public class FindPerfectStudentsCommand implements Command {
     @Override
     public void execute() {
         if (service.getDataGroup()[0] == null) {
-            GroupCriterion ageCriterion = person -> person.getAge();
+            IGroupCriterion ageCriterion = Person::getAge;
             service.getDataGroup()[0] = new DataGroup(ageCriterion);
-            service.loadDataGroup(service.getDataGroup()[0]);
+            service.loadDataInSelectedStructure(service.getDataGroup()[0]);
         }
         System.out.println("--- Поиск всех отличников, старше 14 лет ---");
         // Последовательно (O(n)) проверим успеваемость персон в группах, которые соответствуют условию (>14 лет)
@@ -30,8 +30,8 @@ public class FindPerfectStudentsCommand implements Command {
         for (int i = 15; i <= service.getDataGroup()[0].getGroupLength(); i++) {
             for (Person person : service.getDataGroup()[0].getPersons(i)) {
                 if (person.getStudentPerformance() == 5.0) {
-                    System.out.println(person.getName());
-                    perfectCounter += 1;
+                    System.out.println(person.getSurname() + " " + person.getFirstName());
+                    perfectCounter++;
                 }
             }
         }

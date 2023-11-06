@@ -9,7 +9,7 @@ package com.muyumi.rtkdatagroupsproject;
  * @author Timkov Anton
  */
 @FunctionalInterface
-public interface GroupCriterion {
+public interface IGroupCriterion {
 
     int defineKey(Person person);
 

@@ -4,30 +4,34 @@
  */
 package com.muyumi.rtkdatagroupsproject;
 
+import java.util.stream.IntStream;
+
 /**
  * @author Timkov Anton
  */
 public class Person {
 
-    private final String name;
-    private final int age, group, physics, mathematics, rus, literature, geometry, informatics;
-    private final double studentPerformance;
+    private final String firstName, surname;
+    private final int age, group;
+    private final int[] personGrades = new int[6];
+
 
     public Person(String[] personData) {
-        this.name = personData[0] + " " + personData[1];
+        this.firstName = personData[1];
+        this.surname = personData[0];
         this.age = Integer.parseInt(personData[2]);
         this.group = Integer.parseInt(personData[3]);
-        this.physics = Integer.parseInt(personData[4]);
-        this.mathematics = Integer.parseInt(personData[5]);
-        this.rus = Integer.parseInt(personData[6]);
-        this.literature = Integer.parseInt(personData[7]);
-        this.geometry = Integer.parseInt(personData[8]);
-        this.informatics = Integer.parseInt(personData[9]);
-        this.studentPerformance = (physics + rus + mathematics + literature + geometry + informatics) / 6d;
+        for (var i = 4; i < personData.length; i++) {
+            this.personGrades[i - 4] = Integer.parseInt(personData[i]);
+        }
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public int getAge() {
@@ -38,32 +42,17 @@ public class Person {
         return group;
     }
 
-    public int getPhysics() {
-        return physics;
-    }
-
-    public int getMathematics() {
-        return mathematics;
-    }
-
-    public int getRus() {
-        return rus;
-    }
-
-    public int getLiterature() {
-        return literature;
-    }
-
-    public int getGeometry() {
-        return geometry;
-    }
-
-    public int getInformatics() {
-        return informatics;
+    public Integer[] getPersonGrades() {
+        Integer[] boxedValues = new Integer[personGrades.length];
+        for (int i = 0; i < personGrades.length; i++) {
+            boxedValues[i] = personGrades[i];
+        }
+        return boxedValues;
     }
 
     public double getStudentPerformance() {
-        return studentPerformance;
+        return IntStream.of(personGrades).average().getAsDouble();
     }
+
 
 }

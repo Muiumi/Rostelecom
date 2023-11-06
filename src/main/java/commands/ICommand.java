@@ -8,7 +8,7 @@ package commands;
  *
  * @author timko
  */
-public interface Command {
+public interface ICommand {
 
     void execute();
 }

@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class DataGroup {
 
-    private final GroupCriterion criterion;
+    private final IGroupCriterion criterion;
     private int CONTAINER_SIZE = 12;
     private List<Person>[] personsByGroupCriterion;
 
-    public DataGroup(GroupCriterion criterion) {
+    public DataGroup(IGroupCriterion criterion) {
         this.criterion = criterion;
         this.personsByGroupCriterion = new ArrayList[CONTAINER_SIZE];
         for (int i = 0; i < personsByGroupCriterion.length; i++) {

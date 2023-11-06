@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @param <Person>
  * @author Timkov Anton
  */
-public interface DataLoader<Person> {
+public interface IDataLoader<Person> {
 
     ArrayList<Person> loadData();
 

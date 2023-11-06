@@ -4,21 +4,20 @@
  */
 package com.muyumi.rtkdatagroupsproject;
 
-import dataloaders.DataLoader;
+import dataloaders.IDataLoader;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Timkov Anton
  */
-public class StudentService {
+public class StudentService implements IService<DataGroup> {
 //Сервис для загрузки структур и проверки их наличия
 
-    private final DataLoader<Person> fileDataLoader;
-    private ArrayList<Person> personsList = null;
+    private final IDataLoader<Person> fileDataLoader;
     private final DataGroup[] dataGroupsArray;
 
-    public StudentService(DataLoader<Person> fileDataLoader) {
+    public StudentService(IDataLoader<Person> fileDataLoader) {
         this.fileDataLoader = fileDataLoader;
         DataGroup ageDataGroup = null;
         DataGroup nameDataGroup = null;
@@ -26,16 +25,17 @@ public class StudentService {
         this.dataGroupsArray = new DataGroup[]{ageDataGroup, classroomDataGroup, nameDataGroup};
     }
 
-    public void loadDataFromLoader() {
-        this.personsList = this.fileDataLoader.loadData();
+    public List<Person> loadDataFromLoader() {
+        return this.fileDataLoader.loadData();
     }
 
     public DataGroup[] getDataGroup() {
         return dataGroupsArray;
     }
 
-    public void loadDataGroup(DataGroup currentDataGroup) {
-        for (Person person : personsList) {
+    @Override
+    public void loadDataInSelectedStructure(DataGroup currentDataGroup) {
+        for (Person person : loadDataFromLoader()) {
             currentDataGroup.addPerson(person);
         }
     }

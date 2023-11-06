@@ -5,7 +5,7 @@
 package commands;
 
 import com.muyumi.rtkdatagroupsproject.DataGroup;
-import com.muyumi.rtkdatagroupsproject.GroupCriterion;
+import com.muyumi.rtkdatagroupsproject.IGroupCriterion;
 import com.muyumi.rtkdatagroupsproject.Person;
 import com.muyumi.rtkdatagroupsproject.StudentService;
 
@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * @author Timkov Anton
  */
-public class SearchBySurnameCommand implements Command {
+public class SearchBySurnameCommand implements ICommand {
 
     private final StudentService service;
 
@@ -26,9 +26,9 @@ public class SearchBySurnameCommand implements Command {
     @Override
     public void execute() {
         if (service.getDataGroup()[2] == null) {
-            GroupCriterion nameCriterion = person -> ((int) person.getName().charAt(0) - 1039);
+            IGroupCriterion nameCriterion = person -> ((int) person.getSurname().charAt(0) - 1039);
             service.getDataGroup()[2] = new DataGroup(nameCriterion);
-            service.loadDataGroup(service.getDataGroup()[2]);
+            service.loadDataInSelectedStructure(service.getDataGroup()[2]);
 
         }
         /*
@@ -45,8 +45,8 @@ public class SearchBySurnameCommand implements Command {
             if (sc.hasNextLine()) {
                 String surname = sc.nextLine().toUpperCase();
                 for (Person person : service.getDataGroup()[2].getPersons(surname.charAt(0) - 1039)) {
-                    if (person.getName().toUpperCase().startsWith(surname)) {
-                        foundPersons.add(person.getName());
+                    if (person.getSurname().toUpperCase().startsWith(surname)) {
+                        foundPersons.add(person.getSurname() + " " + person.getFirstName());
                     }
                 }
                 if (!foundPersons.isEmpty()) {
@@ -55,7 +55,7 @@ public class SearchBySurnameCommand implements Command {
                     System.out.println("Людей с такой фамилией найдено не было");
                 }
             }
-        } catch (Exception ex) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("Проверьте корректность ввода");
         }
 
