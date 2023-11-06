@@ -14,13 +14,14 @@ import java.util.List;
  * @author Timkov Anton
  */
 public class PostgreSQLService implements IService<List<Person>> {
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
+    private final String URL;
     private  final String USER;
     private  final String PASSWORD;
     private static Connection connection = null;
     private final IDataLoader<Person> fileDataLoader;
 
-    public PostgreSQLService(String USER, String PASSWORD, DataLoaderFromTextFile fileDataLoader) {
+    public PostgreSQLService(String URL,String USER, String PASSWORD, DataLoaderFromTextFile fileDataLoader) {
+        this.URL = URL;
         this.USER = USER;
         this.PASSWORD = PASSWORD;
         this.fileDataLoader = fileDataLoader;
@@ -43,6 +44,7 @@ public class PostgreSQLService implements IService<List<Person>> {
     @Override
     public void loadDataInSelectedStructure(List<Person> object) throws SQLException {
         getConnection();
+        System.out.println("Началась загрузка БД...");
         try {
             connection.setAutoCommit(false);
             for (Person person : object) {
@@ -54,6 +56,7 @@ public class PostgreSQLService implements IService<List<Person>> {
                 gradesTransfer.insertIntoDB(person);
             }
             connection.commit();
+            System.out.println("Успешная загрузка");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -19,7 +19,7 @@ public class RTKDataStructures {
 
         var fileDataLoader = new DataLoaderFromTextFile("students.csv");
         var service = new StudentService(fileDataLoader);
-        var serviceSQL = new PostgreSQLService(args[0], args[1],fileDataLoader);
+        var serviceSQL = new PostgreSQLService(args[0],args[1], args[2],fileDataLoader);
         var builder = new CommandBuilder(service,serviceSQL);
 
         Scanner cmdScan = new Scanner(System.in);
