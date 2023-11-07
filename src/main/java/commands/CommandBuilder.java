@@ -5,9 +5,6 @@
 package commands;
 
 import com.muyumi.rtkdatagroupsproject.StudentService;
-import dbservices.PostgreSQLService;
-
-import java.sql.SQLException;
 
 /**
  * @author Timkov Anton
@@ -15,14 +12,12 @@ import java.sql.SQLException;
 public class CommandBuilder {
 
     private final StudentService service;
-    private final PostgreSQLService serviceSQL;
 
-    public CommandBuilder(StudentService service, PostgreSQLService serviceSQL) {
+    public CommandBuilder(StudentService service) {
         this.service = service;
-        this.serviceSQL = serviceSQL;
     }
 
-    public void commandFactory(String inputCommand) throws SQLException {
+    public void commandFactory(String inputCommand)  {
         ICommand command = null;
 
         switch (inputCommand) {
@@ -34,18 +29,6 @@ public class CommandBuilder {
                 break;
             case "SurnameSearch":
                 command = new SearchBySurnameCommand(service);
-                break;
-            case "SQLSurnameSearch":
-                command = new SQLSearchBySurnameCommand(serviceSQL);
-                break;
-            case "SQLAvgGrades":
-                command = new SQLAvgGrades(serviceSQL);
-                break;
-            case "SQLPerfectStudents":
-                command = new SQLPerfectStudents(serviceSQL);
-                break;
-            case "BuildDB":
-                serviceSQL.loadDataInSelectedStructure(serviceSQL.loadDataFromLoader());
                 break;
             case "help":
                 System.out.println("""

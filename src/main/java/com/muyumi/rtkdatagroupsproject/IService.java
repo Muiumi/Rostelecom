@@ -8,6 +8,6 @@ import java.util.List;
  */
 public interface IService<T> {
     
-    void loadDataInSelectedStructure(T object) throws SQLException;
+    void loadDataInSelectedStructure(T object);
     List<Person> loadDataFromLoader();
 }

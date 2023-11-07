@@ -4,6 +4,8 @@
  */
 package com.muyumi.rtkdatagroupsproject;
 
+import dataloaders.DataLoaderFromTextFile;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 /**
@@ -13,16 +15,20 @@ public class Person {
 
     private final String firstName, surname;
     private final int age, group;
-    private final int[] personGrades = new int[6];
-
+    private final HashMap<String, Integer> personGradesDict = new HashMap<>();
+    private double studentPerformance;
 
     public Person(String[] personData) {
         this.firstName = personData[1];
         this.surname = personData[0];
         this.age = Integer.parseInt(personData[2]);
         this.group = Integer.parseInt(personData[3]);
+        int[] personGrades = new int[6];
         for (var i = 4; i < personData.length; i++) {
-            this.personGrades[i - 4] = Integer.parseInt(personData[i]);
+            personGrades[i - 4] = Integer.parseInt(personData[i]);
+        }
+        for (int i = 0; i < personGrades.length; i++) {
+            this.personGradesDict.put(DataLoaderFromTextFile.getSubjects()[i], personGrades[i]);
         }
     }
 
@@ -42,17 +48,16 @@ public class Person {
         return group;
     }
 
-    public Integer[] getPersonGrades() {
-        Integer[] boxedValues = new Integer[personGrades.length];
-        for (int i = 0; i < personGrades.length; i++) {
-            boxedValues[i] = personGrades[i];
-        }
-        return boxedValues;
+    public int getPersonGrade(String key) {
+        return personGradesDict.get(key);
     }
 
     public double getStudentPerformance() {
-        return IntStream.of(personGrades).average().getAsDouble();
+        return this.studentPerformance = personGradesDict.values().stream().mapToInt(Integer::intValue).average().orElse(Double.NaN);
     }
 
+    public void setPersonGrade(String subject, int newGrade) {
+        personGradesDict.put(subject, newGrade);
+    }
 
 }
