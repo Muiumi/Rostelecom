@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 
 @Component
 @Service
-public class DBService {
+public class DBService implements IService<ArrayList<String>> {
 
     @Autowired
     SubjectService subjectService;
@@ -40,10 +42,10 @@ public class DBService {
     @Setter
     private static Classroom currentClassroom;
 
-    public void loadData() {
-        loader.checkDataSource();
+
+    public void loadData(ArrayList<String> fileData) {
         subjectService.loadData(loader.getSubjects());
-        for (String dataRow : loader.getFileData()) {
+        for (String dataRow : fileData) {
             classroomService.loadData(dataRow);
             studentService.loadData(dataRow);
             gradeService.loadData(dataRow);

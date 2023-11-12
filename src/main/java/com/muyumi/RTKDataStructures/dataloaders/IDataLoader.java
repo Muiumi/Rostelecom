@@ -1,8 +1,8 @@
 package com.muyumi.RTKDataStructures.dataloaders;
 
-public interface IDataLoader<Student> {
-    void readDataFromFile();
+import java.util.ArrayList;
 
-    void checkDataSource();
+public interface IDataLoader<T> {
+    ArrayList<T> readDataFromFile();
 
 }

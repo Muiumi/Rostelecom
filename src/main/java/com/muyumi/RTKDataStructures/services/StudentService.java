@@ -1,5 +1,6 @@
 package com.muyumi.RTKDataStructures.services;
 
+import com.muyumi.RTKDataStructures.entities.Grade;
 import com.muyumi.RTKDataStructures.entities.Student;
 import com.muyumi.RTKDataStructures.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,18 @@ public class StudentService implements IService<String> {
             students.clear();
         }
     }
+
+    public void editStudentGrade(Long studentId, String subjectName, int gradeValue) {
+        if (studentRepo.findById(studentId).isPresent()) {
+            Student student = studentRepo.findById(studentId).get();
+            for (Grade grade : student.getGradesList()) {
+                if (grade.getSubject().getName().equalsIgnoreCase(subjectName)) {
+                    grade.setGrade(gradeValue);
+                    studentRepo.save(student);
+                    break;
+                }
+            }
+        }
+    }
+
 }

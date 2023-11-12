@@ -16,27 +16,21 @@ import java.util.Arrays;
 public class DataLoaderFromTextFile implements IDataLoader<String> {
     private static final String path = "students.csv";
     private String tableParams;
-    private ArrayList<String> fileData;
 
     @Override
-    public void readDataFromFile() {
+    public ArrayList<String> readDataFromFile() {
         try (BufferedReader buff = new BufferedReader(new FileReader(path))) {
-            fileData = new ArrayList<>();
+            ArrayList<String> fileData = new ArrayList<>();
             String line;
             tableParams = buff.readLine();
             while ((line = buff.readLine()) != null) {
                 fileData.add(line);
-
             }
+            return fileData;
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-    }
-    @Override
-    public void checkDataSource (){
-        if (fileData == null){
-            readDataFromFile();
-        }
+        throw new RuntimeException();
     }
 
     public String[] getSubjects() {

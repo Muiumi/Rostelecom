@@ -16,11 +16,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class Classroom {
+
     @Id
     @Column(name = "year_of_study")
     private int id;
 
-//    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "classroom")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "classrooms_subjects",
