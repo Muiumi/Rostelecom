@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/db")
+@RequestMapping("/students-data")
 public class DBController {
 
     @Autowired
@@ -17,14 +17,14 @@ public class DBController {
     @Autowired
     private DataLoaderFromTextFile loader;
 
-    @GetMapping("loadDB")
+    @GetMapping("db-init")
     public ResponseEntity<String> loadDB() {
         try {
             service.loadData(loader.readDataFromFile());
             return ResponseEntity.ok("Успешная загрузка в БД");
 
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().body("Возникла ошибка " + ex.getMessage());
+            return ResponseEntity.badRequest().body("Возникла ошибка при загрузке");
         }
     }
 }

@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
-public class AverageGradeForStudentModel {
+public class NewStudentModel {
     private String first_name;
     private String surname;
-    private double average_grade;
+    private int age;
+    private Long classroom_num;
 }

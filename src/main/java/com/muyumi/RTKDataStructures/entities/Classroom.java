@@ -19,7 +19,7 @@ public class Classroom {
 
     @Id
     @Column(name = "year_of_study")
-    private int id;
+    private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

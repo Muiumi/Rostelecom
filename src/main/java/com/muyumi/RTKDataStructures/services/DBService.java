@@ -10,11 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 @Component
 @Service
-public class DBService implements IService<ArrayList<String>> {
+public class DBService {
 
     @Autowired
     SubjectService subjectService;
@@ -32,7 +33,7 @@ public class DBService implements IService<ArrayList<String>> {
     private DataLoaderFromTextFile loader;
 
     @Getter
-    private final static int BATCH_SIZE = 1000;
+    private final static int BATCH_SIZE = 4000;
 
     @Getter
     @Setter
@@ -46,9 +47,11 @@ public class DBService implements IService<ArrayList<String>> {
     public void loadData(ArrayList<String> fileData) {
         subjectService.loadData(loader.getSubjects());
         for (String dataRow : fileData) {
-            classroomService.loadData(dataRow);
-            studentService.loadData(dataRow);
-            gradeService.loadData(dataRow);
+            String[] dataFromRow = dataRow.split(",");
+            String[] gradesFromRow = Arrays.copyOfRange(dataFromRow, 4, dataFromRow.length);
+            classroomService.loadData(dataFromRow);
+            studentService.loadData(dataFromRow);
+            gradeService.loadData(gradesFromRow);
         }
     }
 }

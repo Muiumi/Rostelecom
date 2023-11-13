@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqGen")
-    @SequenceGenerator(name = "seqGen", sequenceName = "seq", initialValue = 1)
+    @SequenceGenerator(name = "seqGen", sequenceName = "seq")
     @Column(name = "grade_id")
     private Long id;
 
