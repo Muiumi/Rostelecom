@@ -88,33 +88,6 @@ paths:
           description: "Успешное добавление студента, необходимо заполнить оценки"
         "404":
           description: "Ошибка при добавлении студента, отсутствие учебной группы с указанным идентификатором"
-  /students/student-addition/{student_id}:
-    post:
-      summary: "Добавление оценок студенту, добавленному с помощью student-addition"
-      parameters:
-      - name: student_id
-        in: path
-        description: Идентификатор студента
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-          example: 105
-      - name: grades
-        in: query
-        description: Новые оценки студента
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: "1,5,3,2,4,5"
-      responses:
-        "200":
-          description: Успешное добавление оценок студенту
-        "404":
-          description: "Ошибка при добавлении студента, отсутствие студента с указанным идентификатором, попытка заполнить оценки студенту, у которого они уже есть"
 components:
   schemas:
     Student:
@@ -122,6 +95,7 @@ components:
       - age
       - classroom_num
       - first_name
+      - grades_row
       - surname
       type: object
       properties:
@@ -137,6 +111,9 @@ components:
         classroom_num:
           type: integer
           example: 6
+        grades_row:
+          type: string
+          example: "1,5,3,2,4,5"
     inline_response_200:
       type: object
       properties:
