@@ -1,13 +1,10 @@
 package com.muyumi.RTKDataStructures.services;
 
+import com.muyumi.RTKDataStructures.dto.NewStudentDTO;
 import com.muyumi.RTKDataStructures.entities.Grade;
 import com.muyumi.RTKDataStructures.entities.Student;
-import com.muyumi.RTKDataStructures.entities.Subject;
-import com.muyumi.RTKDataStructures.exceptions.GradesAlreadyExistException;
 import com.muyumi.RTKDataStructures.exceptions.StudentNotFoundException;
 import com.muyumi.RTKDataStructures.repositories.StudentRepository;
-import com.muyumi.RTKDataStructures.requestmodels.NewStudentModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +13,27 @@ import java.util.ArrayList;
 @Service
 public class StudentService implements EntityService<Student> {
 
-    @Autowired
-    private StudentRepository studentRepo;
-    @Autowired
-    private GradeService gradeService;
-    @Autowired
-    private ClassroomService classroomService;
+    private final StudentRepository studentRepo;
+    private final GradeService gradeService;
+    private final ClassroomService classroomService;
 
     private int count = 0;
     private final ArrayList<Student> students = new ArrayList<>();
 
+    public StudentService(StudentRepository studentRepo, GradeService gradeService, ClassroomService classroomService) {
+        this.studentRepo = studentRepo;
+        this.gradeService = gradeService;
+        this.classroomService = classroomService;
+    }
+
 
     @Override
-    public void loadData(String[] studentData) {
-        var student = new Student();
-        student.setSurname(studentData[0]);
-        student.setFirstName(studentData[1]);
-        student.setAge(Integer.parseInt(studentData[2]));
-        student.setClassroom(DBService.getCurrentClassroom());
-        DBService.setCurrentStudent(student);
-        students.add(student);
+    public void loadData(String[] studentData, Student currentStudent) {
+        currentStudent.setSurname(studentData[0]);
+        currentStudent.setFirstName(studentData[1]);
+        currentStudent.setAge(Integer.parseInt(studentData[2]));
+        currentStudent.setClassroom(classroomService.getCurrentClassroom());
+        students.add(currentStudent);
         count++;
         if (count % DBService.getBATCH_SIZE() == 0) {
             saveData();
@@ -75,36 +73,20 @@ public class StudentService implements EntityService<Student> {
         }
     }
 
-    public ResponseEntity<String> addStudent(NewStudentModel newStudent) throws ClassNotFoundException {
-        if (classroomService.entityIsPresent(newStudent.getClassroom_num())) {
+    public ResponseEntity<String> addStudent(NewStudentDTO studentDTO) throws ClassNotFoundException {
+        if (classroomService.entityIsPresent(studentDTO.getClassroomNum())) {
             var student = new Student();
-            student.setSurname(newStudent.getSurname());
-            student.setFirstName(newStudent.getFirst_name());
-            student.setAge(newStudent.getAge());
-            student.setClassroom(classroomService.getOne(newStudent.getClassroom_num()));
+            student.setSurname(studentDTO.getSurname());
+            student.setFirstName(studentDTO.getFirstName());
+            student.setAge(studentDTO.getAge());
+            student.setClassroom(classroomService.getOne(studentDTO.getClassroomNum()));
             studentRepo.saveAndFlush(student);
-            return ResponseEntity.ok("Указанный студент успешно сохранён под следующим идентификатором: " + student.getId() + ". Однако необходимо заполнить оценки для указанного студента по следующим предметам: " +
-                    classroomService.getOne(newStudent.getClassroom_num()).getSubjects().stream().map(Subject::getName).toList() + "\n Для загрузки оценок студента воспользуйтесь командой /student-addition/{student_id} c параметром grades, содержащем оценки через запятую");
+            String[] gradesFromString = studentDTO.getGradesRow().split(",");
+            gradeService.loadData(gradesFromString, student);
+            gradeService.saveData();
+            return ResponseEntity.ok("Студент успешно добавлен с идентификатором " + student.getId());
         } else {
-            throw new ClassNotFoundException("Учебной группы с идентификатором " + newStudent.getClassroom_num() + " не существует.");
-        }
-    }
-
-    public ResponseEntity<String> addGradesToStudent(Long studentId, String grades) throws StudentNotFoundException, GradesAlreadyExistException {
-        if (entityIsPresent(studentId)) {
-            Student studentById = getOne(studentId);
-            if (studentById.getGradesList().isEmpty()) {
-                String[] gradesFromString = grades.split(",");
-                DBService.setCurrentStudent(studentById);
-                DBService.setCurrentClassroom(studentById.getClassroom());
-                gradeService.loadData(gradesFromString);
-                gradeService.saveData();
-                return ResponseEntity.ok("Оценки успешно добавлены студенту");
-            } else {
-                throw new GradesAlreadyExistException("Оценки для студента с идентификатором " + studentId + "уже заполнены.");
-            }
-        } else {
-            throw new StudentNotFoundException("Студента с идентификатором " + studentId + " не существует.");
+            throw new ClassNotFoundException("Учебной группы с идентификатором " + studentDTO.getClassroomNum() + " не существует.");
         }
     }
 }

@@ -198,7 +198,6 @@
   <li><a href="#gradesClassroomIdAvgGradesGet"><code><span class="http-method">get</span> /grades/{classroom_id}/avg-grades</code></a></li>
   <li><a href="#studentsDataDbInitGet"><code><span class="http-method">get</span> /students-data/db-init</code></a></li>
   <li><a href="#studentsStudentAdditionPost"><code><span class="http-method">post</span> /students/student-addition</code></a></li>
-  <li><a href="#studentsStudentAdditionStudentIdPost"><code><span class="http-method">post</span> /students/student-addition/{student_id}</code></a></li>
   <li><a href="#studentsStudentIdGradeChangeSubjectNameGradePut"><code><span class="http-method">put</span> /students/{student_id}/grade-change/{subject_name}/{grade}</code></a></li>
   </ul>
 
@@ -318,43 +317,6 @@
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="studentsStudentAdditionStudentIdPost"></a>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /students/student-addition/{student_id}</code></pre></div>
-    <div class="method-summary">Добавление оценок студенту, добавленному с помощью student-addition (<span class="nickname">studentsStudentAdditionStudentIdPost</span>)</div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">student_id (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Идентификатор студента </div>    </div>  <!-- field-items -->
-
-
-
-
-    <h3 class="field-label">Query parameters</h3>
-    <div class="field-items">
-      <div class="param">grades (required)</div>
-      
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Новые оценки студента </div>    </div>  <!-- field-items -->
-
-
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    Успешное добавление оценок студенту
-        <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    Ошибка при добавлении студента, отсутствие студента с указанным идентификатором, попытка заполнить оценки студенту, у которого они уже есть
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
   <div class="method"><a name="studentsStudentIdGradeChangeSubjectNameGradePut"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
@@ -413,6 +375,8 @@
           <div class="param-desc"><span class="param-type">example: 12</span></div>
 <div class="param">classroom_num </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
           <div class="param-desc"><span class="param-type">example: 6</span></div>
+<div class="param">grades_row </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 1,5,3,2,4,5</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">

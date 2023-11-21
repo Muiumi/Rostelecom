@@ -2,16 +2,15 @@ package com.muyumi.RTKDataStructures.services;
 
 import com.muyumi.RTKDataStructures.entities.Subject;
 import com.muyumi.RTKDataStructures.repositories.SubjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component
 @Service
 public class SubjectService implements EntityService<Subject> {
-    @Autowired
-    private SubjectRepository subjectRepo;
+    private final SubjectRepository subjectRepo;
 
+    public SubjectService(SubjectRepository subjectRepo) {
+        this.subjectRepo = subjectRepo;
+    }
 
     @Override
     public void loadData(String[] subjects) {
@@ -32,7 +31,7 @@ public class SubjectService implements EntityService<Subject> {
         return subjectRepo.findById(id).get();
     }
 
-    public Iterable<Subject> findAllEnitities() {
+    public Iterable<Subject> findAllEntities() {
         return subjectRepo.findAll();
     }
 }

@@ -5,53 +5,48 @@ import com.muyumi.RTKDataStructures.entities.Classroom;
 import com.muyumi.RTKDataStructures.entities.Student;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-
-@Component
 @Service
 public class DBService {
 
-    @Autowired
-    SubjectService subjectService;
-
-    @Autowired
-    ClassroomService classroomService;
-
-    @Autowired
-    StudentService studentService;
-
-    @Autowired
-    GradeService gradeService;
-
-    @Autowired
-    private DataLoaderFromTextFile loader;
+    private final SubjectService subjectService;
+    private final ClassroomService classroomService;
+    private final StudentService studentService;
+    private final GradeService gradeService;
+    private final DataLoaderFromTextFile loader;
 
     @Getter
     private final static int BATCH_SIZE = 4000;
 
     @Getter
     @Setter
-    private static Student currentStudent;
+    private Student currentStudent;
 
     @Getter
     @Setter
-    private static Classroom currentClassroom;
+    private Classroom currentClassroom;
 
+    public DBService(SubjectService subjectService, ClassroomService classroomService, StudentService studentService, GradeService gradeService, DataLoaderFromTextFile loader) {
+        this.subjectService = subjectService;
+        this.classroomService = classroomService;
+        this.studentService = studentService;
+        this.gradeService = gradeService;
+        this.loader = loader;
+    }
 
-    public void loadData(ArrayList<String> fileData) {
+    public void loadData(List<String> fileData) {
         subjectService.loadData(loader.getSubjects());
         for (String dataRow : fileData) {
             String[] dataFromRow = dataRow.split(",");
             String[] gradesFromRow = Arrays.copyOfRange(dataFromRow, 4, dataFromRow.length);
+            var student = new Student();
             classroomService.loadData(dataFromRow);
-            studentService.loadData(dataFromRow);
-            gradeService.loadData(gradesFromRow);
+            studentService.loadData(dataFromRow, student);
+            gradeService.loadData(gradesFromRow, student);
         }
     }
 }

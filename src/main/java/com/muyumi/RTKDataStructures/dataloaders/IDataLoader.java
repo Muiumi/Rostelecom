@@ -1,8 +1,9 @@
 package com.muyumi.RTKDataStructures.dataloaders;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 public interface IDataLoader<T> {
-    ArrayList<T> readDataFromFile();
+    List<T> readDataFromFile() throws FileNotFoundException;
 
 }

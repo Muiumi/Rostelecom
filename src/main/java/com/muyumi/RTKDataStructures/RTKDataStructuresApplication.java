@@ -1,6 +1,5 @@
 package com.muyumi.RTKDataStructures;
 
-import com.muyumi.RTKDataStructures.services.SubjectService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

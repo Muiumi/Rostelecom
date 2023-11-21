@@ -1,24 +1,27 @@
 package com.muyumi.RTKDataStructures.controllers;
 
+import com.muyumi.RTKDataStructures.exceptions.ClassroomNotFoundException;
 import com.muyumi.RTKDataStructures.services.GradeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequestMapping("/grades")
 public class GradeController {
 
-    @Autowired
-    GradeService gradeService;
+    private final GradeService gradeService;
+
+    public GradeController(GradeService gradeService) {
+        this.gradeService = gradeService;
+    }
 
     @GetMapping("/{classroom_id}/avg-grades")
-    public ResponseEntity getAverageGradesForClassroom(@PathVariable int classroom_id) {
-        try {
-            return ResponseEntity.ok(gradeService.getAverageGrades(classroom_id));
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public ResponseEntity getAverageGradesForClassroom(@PathVariable Long classroom_id) throws ClassroomNotFoundException {
+        return ResponseEntity.ok(gradeService.getAverageGrades(classroom_id));
     }
 }
+

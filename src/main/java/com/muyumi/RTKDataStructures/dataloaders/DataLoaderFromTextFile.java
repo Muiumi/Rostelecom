@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @NoArgsConstructor
 @Component
@@ -18,9 +20,9 @@ public class DataLoaderFromTextFile implements IDataLoader<String> {
     private String tableParams;
 
     @Override
-    public ArrayList<String> readDataFromFile() {
+    public List<String> readDataFromFile() throws FileNotFoundException {
         try (BufferedReader buff = new BufferedReader(new FileReader(path))) {
-            ArrayList<String> fileData = new ArrayList<>();
+            List<String> fileData = new ArrayList<>();
             String line;
             tableParams = buff.readLine();
             while ((line = buff.readLine()) != null) {
@@ -28,9 +30,8 @@ public class DataLoaderFromTextFile implements IDataLoader<String> {
             }
             return fileData;
         } catch (IOException ex) {
-            System.out.println("Error: " + ex.getMessage());
+            throw new FileNotFoundException("Файл students.csv отсутствует в корне проекта ");
         }
-        throw new RuntimeException();
     }
 
     public String[] getSubjects() {
