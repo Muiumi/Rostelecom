@@ -5,6 +5,7 @@ import com.muyumi.RTKDataStructures.entities.Grade;
 import com.muyumi.RTKDataStructures.entities.Student;
 import com.muyumi.RTKDataStructures.exceptions.ClassroomNotFoundException;
 import com.muyumi.RTKDataStructures.repositories.GradeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,39 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class GradeService implements EntityService<Grade> {
 
     private final GradeRepository gradeRepo;
 
-    private int count = 0;
-    private final ArrayList<Grade> grades = new ArrayList<>();
-
-    public GradeService(GradeRepository gradeRepo) {
-        this.gradeRepo = gradeRepo;
-    }
-
     @Override
-    public void loadData(String[] gradesFromRow, Student currentStudent) {
-        for (var i = 0; i < gradesFromRow.length; i++) {
-            var grade = new Grade();
-            grade.setGrade(Integer.parseInt(gradesFromRow[i]));
-            grade.setStudent(currentStudent);
-            grade.setSubject(currentStudent.getClassroom().getSubjects().get(i));
-            grades.add(grade);
-        }
-        count++;
-        if (count % DBService.getBATCH_SIZE() == 0) {
-            saveData();
-        }
-    }
-
-    @Override
-    public void saveData() {
-        count = 0;
-        gradeRepo.saveAll(grades);
+    public void saveData(List<Grade> gradesList) {
+        gradeRepo.saveAll(gradesList);
         gradeRepo.flush();
-        grades.clear();
     }
 
     @Override
@@ -58,7 +36,7 @@ public class GradeService implements EntityService<Grade> {
     }
 
     public List<AverageGradeForStudentDTO> getAverageGrades(Long classroomId) throws ClassroomNotFoundException {
-        List<AverageGradeForStudentDTO> studentsGrades = new ArrayList<>();
+        var studentsGrades = new ArrayList<AverageGradeForStudentDTO>();
         List<Grade> grades = gradeRepo.findByStudentClassroomId(classroomId);
         Map<Student, List<Grade>> gradesForStudentMap = grades.stream().collect(Collectors.groupingBy(Grade::getStudent));
         for (Map.Entry<Student, List<Grade>> entry : gradesForStudentMap.entrySet()) {

@@ -1,5 +1,6 @@
 package com.muyumi.RTKDataStructures.dataloaders;
 
+import com.muyumi.RTKDataStructures.dto.NewStudentDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,18 +16,26 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 @Getter
-public class DataLoaderFromTextFile implements IDataLoader<String> {
+public class DataLoaderFromTextFile implements DataLoader<NewStudentDTO> {
     private static final String path = "students.csv";
     private String tableParams;
 
     @Override
-    public List<String> readDataFromFile() throws FileNotFoundException {
-        try (BufferedReader buff = new BufferedReader(new FileReader(path))) {
-            List<String> fileData = new ArrayList<>();
+    public List<NewStudentDTO> readDataFromFile() throws FileNotFoundException {
+        try (var buff = new BufferedReader(new FileReader(path))) {
+            var fileData = new ArrayList<NewStudentDTO>();
             String line;
             tableParams = buff.readLine();
             while ((line = buff.readLine()) != null) {
-                fileData.add(line);
+                var dataFromRow = line.split(",", 5);
+                // Заполняем модель студента из строки
+                var student = new NewStudentDTO();
+                student.setSurname(dataFromRow[0]);
+                student.setFirstName(dataFromRow[1]);
+                student.setAge(Integer.parseInt(dataFromRow[2]));
+                student.setClassroomNum(Long.parseLong(dataFromRow[3]));
+                student.setGradesRow(dataFromRow[4]);
+                fileData.add(student);
             }
             return fileData;
         } catch (IOException ex) {

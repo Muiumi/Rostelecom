@@ -3,19 +3,16 @@ package com.muyumi.RTKDataStructures.controllers;
 import com.muyumi.RTKDataStructures.dto.NewStudentDTO;
 import com.muyumi.RTKDataStructures.exceptions.StudentNotFoundException;
 import com.muyumi.RTKDataStructures.services.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @PutMapping("/{student_id}/grade-change/{subject_name}/{grade}")
     public ResponseEntity<String> editStudentGrade(@PathVariable Long student_id, @PathVariable String subject_name, @PathVariable int grade) throws StudentNotFoundException {
